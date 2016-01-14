@@ -1,4 +1,4 @@
-package randbo
+package random
 
 import (
 	"math/rand"
