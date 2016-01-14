@@ -35,7 +35,7 @@ func Read(p []byte) {
 		p[on + 7] = byte(val >> 56)
 		on += 8
 	}
-	switch (uintptr(len(p)) - offset) {
+	switch (uintptr(len(p)) - on) {
 		case 0:
 			return
 		case 1:
@@ -99,7 +99,7 @@ func Printable(p []byte) {
 		p[on + 7] = byte2print[byte(val >> 56)]
 		on += 8
 	}
-	switch (uintptr(len(p)) - offset) {
+	switch (uintptr(len(p)) - on) {
 		case 0:
 			return
 		case 1:
