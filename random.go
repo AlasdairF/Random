@@ -3,19 +3,11 @@ package random
 import (
 	"math/rand"
 	"time"
-	"sync"
 )
 
 const (
-	bufferSize = 32
 	byte2print = `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-`
 )
-
-var pool = sync.Pool{
-    New: func() interface{} {
-        return make([]byte, bufferSize)
-    },
-}
 
 var auto rand.Source = rand.NewSource(time.Now().UnixNano())
 
@@ -148,17 +140,19 @@ func Printable(p []byte) {
 }
 
 func String(length int) string {
-	if length > bufferSize {
-		p := make([]byte, length)
-		Printable(p)
-		return string(p)
-	} else {
-		if length <= 0 {
-			return ``
-		}
-		p := pool.Get().([]byte)
-		defer pool.Put(p)
-		Printable(p[0:length])
-		return string(p[0:length])
+	if length <= 0 {
+		return ``
 	}
+	p := make([]byte, length)
+	Printable(p)
+	return string(p)
+}
+
+func Bytes(length int) []byte {
+	if length <= 0 {
+		return nil
+	}
+	p := make([]byte, length)
+	Printable(p)
+	return p
 }
